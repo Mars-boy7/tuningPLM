@@ -10,7 +10,7 @@ class PromptBuilder:
         relation_list: list,
         pid2name: dict,
         mask_token: str,
-        rule_file,#记得在方法调用给定规则文件的URL
+        rule_file:list,#记得在方法调用给定规则文件的URL
     ):
         relation_name_list = [pid2name[r][0] for r in relation_list]
         #添加转换代码
@@ -28,20 +28,21 @@ class PromptBuilder:
         # 创建一个空的列表来存储匹配的规则
         rule_list = []
         
-        # 打开规则文件并逐行读取
-        with open(rule_file, "r") as file:
-            next(file)  # 跳过头行
-            for line in file:
-                # 移除换行符并按逗号分割
-                parts = line.strip().split(',')
-                # 将字符串表示的列表转换回列表
-                rule = eval(parts[0])
-                label = parts[1].strip()
+        for one_rule_file in rule_file:
+            # 打开规则文件并逐行读取
+            with open(one_rule_file, "r") as file:
+                next(file)  # 跳过头行
+                for line in file:
+                    # 移除换行符并按逗号分割
+                    parts = line.strip().split(',')
+                    # 将字符串表示的列表转换回列表
+                    rule = eval(parts[0])
+                    label = parts[1].strip()
 
-                # 检查当前行的标签是否在提供的关系名称列表中
-                if label in relation_name_list:
-                    # 如果在，则将整个规则添加到规则列表中
-                    rule_list.append(rule)
+                    # 检查当前行的标签是否在提供的关系名称列表中
+                    if label in relation_name_list:
+                        # 如果在，则将整个规则添加到规则列表中
+                        rule_list.append(rule)
         
         return rule_list
 
@@ -74,7 +75,7 @@ class EnsemblePormptBuilder(PromptBuilder):
         relation_list: list, 
         pid2name: dict, 
         mask_token: str,
-        rule_file,#记得在方法调用给定规则文件的URL
+        rule_file:list,#记得在方法调用给定规则文件的URL
     ):
         relation_name_list = [pid2name[r][0] for r in relation_list]
         #添加转换代码
