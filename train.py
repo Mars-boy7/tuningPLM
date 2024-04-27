@@ -6,6 +6,8 @@ import torch
 import numpy as np
 import random
 import time
+import os
+import process
 
 
 class ProtoEntityTrainer:
@@ -172,7 +174,9 @@ class ProtoEntityTrainer:
         sampled_relation_list = relation_sampler.sample()
         support_set, query_set = example_sampler.sample(relation=sampled_relation_list)
         #添加rule_file
-        rule_file = "../../EXER/rule_o.csv"
+        rule_file_root = "../../EXER/"
+        rule_set = gen_rule_set(rule_file_root)
+
         prompt_s = PromptBuilder.build_support_prompt_inputs(
                 self,
                 token_list=support_set['token'],
@@ -181,7 +185,7 @@ class ProtoEntityTrainer:
                 relation_list=support_set['label'],
                 mask_token=self.tokenizer.mask_token,
                 pid2name=self.pid2name,
-                rule_file = rule_file
+                rule_file = rule_set,
         )
         prompt_q = PromptBuilder.build_query_prompt_inputs(
             self,
@@ -189,7 +193,7 @@ class ProtoEntityTrainer:
             head_list=query_set['head'],
             tail_list=query_set['tail'],
             mask_token=self.tokenizer.mask_token,
-            rule_file = rule_file
+            rule_file = rule_set,#change rule_file_URL to a iterable variant
         )
         
         marker_s = entity_marker.mark(
