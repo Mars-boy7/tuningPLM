@@ -24,7 +24,7 @@ class PromptBuilder:
         return prompt_input_list
 
     #根据关系名称获取对应的规则
-    def map_rel_rule(self,rule_file, relation_name_list):
+    def map_rel_rule(self, rule_file, relation_name_list):
         # 创建一个空的列表来存储匹配的规则
         rule_list = []
         

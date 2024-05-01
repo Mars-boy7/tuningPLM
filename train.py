@@ -65,6 +65,7 @@ class ProtoEntityTrainer:
         
         self.entity_marker = EntityMarkerBuilder()
         self.input_feature_builder = InputFeatureBuilder()
+        self.promptbuilder = PromptBuilder()
 
     
     def _init_tokenizer(self):
@@ -175,21 +176,19 @@ class ProtoEntityTrainer:
         sampled_relation_list = relation_sampler.sample()
         support_set, query_set = example_sampler.sample(relation=sampled_relation_list)
         #添加rule_file
-        rule_file_root = "../../EXER/"
+        rule_file_root = "/home/zjc/test_tuningPLM/EXER/"
         rule_set = gen_rule_set(rule_file_root)
 
-        prompt_s = PromptBuilder.build_support_prompt_inputs(
-                self,
+        prompt_s = self.promptbuilder.build_support_prompt_inputs(
                 token_list=support_set['token'],
                 head_list=support_set['head'],
                 tail_list=support_set['tail'],
                 relation_list=support_set['label'],
                 mask_token=self.tokenizer.mask_token,
                 pid2name=self.pid2name,
-                rule_file = rule_set,
+                rule_file =rule_set,
         )
-        prompt_q = PromptBuilder.build_query_prompt_inputs(
-            self,
+        prompt_q = self.promptbuilder.build_query_prompt_inputs(
             token_list=query_set['token'],
             head_list=query_set['head'],
             tail_list=query_set['tail'],
