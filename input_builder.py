@@ -14,7 +14,7 @@ class PromptBuilder:
     ):
         relation_name_list = [pid2name[r][0] for r in relation_list]
         #添加转换代码
-        rule_list = map_rel_rule(rule_file,relation_name_list)
+        rule_list = self.map_rel_rule(rule_file,relation_name_list)
         prompt_input_list = []
         text_list = [' '.join(token) for token in token_list]
         for i in range(len(text_list)):
@@ -24,7 +24,7 @@ class PromptBuilder:
         return prompt_input_list
 
     #根据关系名称获取对应的规则
-    def map_rel_rule(rule_file, relation_name_list):
+    def map_rel_rule(self,rule_file, relation_name_list):
         # 创建一个空的列表来存储匹配的规则
         rule_list = []
         
@@ -79,7 +79,7 @@ class EnsemblePormptBuilder(PromptBuilder):
     ):
         relation_name_list = [pid2name[r][0] for r in relation_list]
         #添加转换代码
-        rule_list = map_rel_rule(rule_file,relation_name_list)
+        rule_list = self.map_rel_rule(rule_file,relation_name_list)
         prompt_input_list = []
         text_list = [' '.join(token) for token in token_list]
         for i in range(len(text_list)):

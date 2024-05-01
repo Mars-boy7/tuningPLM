@@ -7,7 +7,8 @@ import numpy as np
 import random
 import time
 import os
-import process
+from process import gen_rule_set
+
 
 
 class ProtoEntityTrainer:
